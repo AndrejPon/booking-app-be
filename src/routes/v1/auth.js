@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 const validation = require('../../middleware/validation');
 const { userSchema } = require('../../models/auth');
 const { mysqlConfig, jwtSecret } = require('../../dbConfig');
-// const isAuth = require('../../middleware/auth');
 
 const router = express.Router();
 

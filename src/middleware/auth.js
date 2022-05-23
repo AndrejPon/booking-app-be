@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { jwtSecret } = require('../dbConfig');
 
-const isAuth = (res, res, next) => {
+const isAuth = (req, res, next) => {
   try {
     const token = req.headers.authorization?.split(' ')[1];
     return next();
