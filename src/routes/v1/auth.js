@@ -40,4 +40,35 @@ router.post('/register', validation(userSchema), async (req, res) => {
   }
 });
 
+router.post('/login', validation(userSchema), async (req, res) => {
+  try {
+    const conn = await mysql.createConnection(mysqlConfig);
+    const [data] = await conn.execute(`
+        SELECT * FROM bapp_users
+        WHERE email = (${mysql.escape(req.body.email)})
+        `);
+    await conn.end();
+
+    if (data.length !== 1) {
+      return res.status(400).send({ error: 'Incorrect email or password.' });
+    }
+    const checkPassword = bcrypt.compareSync(
+      req.body.password,
+      data[0].password
+    );
+
+    if (!checkPassword) {
+      return res.status(400).send({ error: 'Incorrect email or password.' });
+    }
+
+    const token = jwt.sign({ id: data[0].id }, jwtSecret);
+    return res.send({ msg: 'You are successfully logged in!', token, data });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .send({ error: 'Unexpected server error. Please try again.' });
+  }
+});
+
 module.exports = router;
