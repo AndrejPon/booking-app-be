@@ -5,7 +5,9 @@ const validation = (schema) => async (req, res, next) => {
   } catch (error) {
     return res
       .status(400)
-      .send({ msg: 'Incorrect validation data. Please check input fields' });
+      .send({
+        msg: 'Neteisingi prisijungimo duomenys. Patikrinkite įvesties laukus.',
+      });
   }
 };
 

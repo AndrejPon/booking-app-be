@@ -1,15 +1,14 @@
 const express = require('express');
 const mysql = require('mysql2/promise');
-const isAuth = require('../../middleware/auth');
 const { mysqlConfig } = require('../../dbConfig');
 
 const router = express.Router();
 
-router.get('/', isAuth, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const conn = await mysql.createConnection(mysqlConfig);
     const [data] = await conn.execute(`
-    SELECT name, duration, price 
+    SELECT id, name, image, duration, price 
     FROM bapp_services
     `);
     await conn.end();

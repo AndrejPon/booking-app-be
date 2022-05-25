@@ -25,17 +25,21 @@ router.post('/register', validation(userSchema), async (req, res) => {
     if (!data.insertId) {
       return res
         .status(500)
-        .send({ error: 'Unexpected server error. Please try again.' });
+        .send({
+          error: 'Nenumatyta serverio klaida. Prašome, pabandyti dar kartą.',
+        });
     }
     return res.send({
-      msg: 'You are successfully registered!',
+      msg: 'Jūs sėkmingai užsiregistravote!',
       id: data.insertId,
     });
   } catch (error) {
     console.log(error);
     return res
       .status(500)
-      .send({ error: 'Unexpected server error. Please try again.' });
+      .send({
+        error: 'Nenumatyta serverio klaida. Prašome, pabandyti dar kartą.',
+      });
   }
 });
 
@@ -47,9 +51,10 @@ router.post('/login', validation(userSchema), async (req, res) => {
         WHERE email = (${mysql.escape(req.body.email)})
         `);
     await conn.end();
-
     if (data.length !== 1) {
-      return res.status(400).send({ error: 'Incorrect email or password.' });
+      return res
+        .status(400)
+        .send({ error: 'Neteisingas el. paštas arba slaptažodis.' });
     }
     const checkPassword = bcrypt.compareSync(
       req.body.password,
@@ -57,16 +62,20 @@ router.post('/login', validation(userSchema), async (req, res) => {
     );
 
     if (!checkPassword) {
-      return res.status(400).send({ error: 'Incorrect email or password.' });
+      return res
+        .status(400)
+        .send({ error: 'Neteisingas el. paštas arba slaptažodis.' });
     }
 
     const token = jwt.sign({ id: data[0].id }, jwtSecret);
-    return res.send({ msg: 'You are successfully logged in!', token, data });
+    return res.send({ msg: 'Jūs sėkmingai prisijungėte!', token, data });
   } catch (error) {
     console.log(error);
     return res
       .status(500)
-      .send({ error: 'Unexpected server error. Please try again.' });
+      .send({
+        error: 'Nenumatyta serverio klaida. Prašome, pabandyti dar kartą.',
+      });
   }
 });
 
