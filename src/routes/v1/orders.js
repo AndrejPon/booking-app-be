@@ -5,17 +5,19 @@ const { mysqlConfig } = require('../../dbConfig');
 
 const router = express.Router();
 
-router.post('/', isAuth, async (req, res) => {
+router.post('/:id', isAuth, async (req, res) => {
   try {
-    // const id = req.params.id;
-    // console.log('id ===', id);
+    const orderId = req.params.id;
+
     const conn = await mysql.createConnection(mysqlConfig);
 
     const [data] = await conn.execute(
       `INSERT INTO bapp_orders(user_id, first_name, last_name, phone_number, email, service_name, service_id, service_duration, service_price)
       SELECT bapp_users.id, bapp_users.first_name, bapp_users.last_name, bapp_users.phone_number, bapp_users.email, bapp_services.name, bapp_services.id, bapp_services.duration, bapp_services.price
       FROM bapp_users, bapp_services
-      WHERE bapp_users.id=(${mysql.escape(req.user.id)}) and bapp_services.id=3`
+      WHERE bapp_users.id=(${mysql.escape(
+        req.user.id
+      )}) and bapp_services.id=(${mysql.escape(orderId)})`
     );
 
     await conn.end();
@@ -24,6 +26,7 @@ router.post('/', isAuth, async (req, res) => {
         error: 'Nenumatyta serverio klaida. Prašome, pabandyti dar kartą.',
       });
     }
+    console.log('orderId ===', orderId);
     return res.send({
       msg: 'Jūsų užsakymas sukurtas.',
       id: data.insertId,
@@ -67,7 +70,6 @@ router.delete('/:id', isAuth, async (req, res) => {
   try {
     const conn = await mysql.createConnection(mysqlConfig);
     const orderId = req.params.id;
-    console.log('orderId ===', orderId);
     const [data] = await conn.execute(`
     DELETE FROM bapp_orders
     WHERE id = ${mysql.escape(orderId)}
