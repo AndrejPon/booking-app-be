@@ -26,7 +26,6 @@ router.post('/:id', isAuth, async (req, res) => {
         error: 'Nenumatyta serverio klaida. Prašome, pabandyti dar kartą.',
       });
     }
-    console.log('orderId ===', orderId);
     return res.send({
       msg: 'Jūsų užsakymas sukurtas.',
       id: data.insertId,
