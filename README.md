@@ -51,11 +51,17 @@ DELETE /:id;
 To run this project, you will need to add the following environment variables to your .env file
 
 `PORT=`
+
 `MYSQL_HOST=`
+
 `MYSQL_USER=`
+
 `MYSQL_PASS=`
+
 `MYSQL_DB=`
+
 `MYSQL_PORT=`
+
 `JWT_SECRET=`
 
 ## Future development
