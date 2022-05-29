@@ -7,7 +7,6 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const conn = await mysql.createConnection(mysqlConfig);
-    console.log('conn ===', conn);
     const [data] = await conn.execute(`
     SELECT id, name, image, duration, price 
     FROM bapp_services

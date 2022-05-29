@@ -38,16 +38,6 @@ router.post('/:id', isAuth, async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
-  try {
-    // const orderId = req.params.id;
-    // console.log('orderId===', orderId);
-    return res.send(orderId);
-  } catch (error) {
-    console.log(error);
-  }
-});
-
 router.get('/', isAuth, async (req, res) => {
   try {
     const conn = await mysql.createConnection(mysqlConfig);
