@@ -34,6 +34,10 @@ GET /:id;
 
 DELETE /:id;
 
+## GiHub repository
+
+https://github.com/AndrejPon/booking-app-be
+
 ## Dependencies
 
 `bcryptjs: ^2.4.3`
